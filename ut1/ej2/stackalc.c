@@ -1,7 +1,9 @@
 // Compile with `gcc stackalc01.c -o stackalc01.exe`
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <math.h>
+#include <ctype.h>
 
 #define MAX_INPUT 1024
 #define MAX_CODE 30
@@ -97,55 +99,23 @@ void eval(char *code[], int *pos, double stack[], int *top, double variables[])
   }
 
   //Variables
-  else if (strcmp("GET:0", instr) == 0)
+  else if (strncmp("GET:", instr, 4) == 0)
   {
-    (*top)++;
-    stack[*top] = variables[0];
+    if (isdigit(instr[4]) != 0)
+    {
+      int num = atoi(&(instr[4]));
+      (*top)++;
+      stack[*top] = variables[num];
+    }
   }
-  else if (strcmp("GET:1", instr) == 0)
+  else if (strncmp("SET:", instr, 4) == 0)
   {
-    (*top)++;
-    stack[*top] = variables[1];
-  }
-  else if (strcmp("GET:2", instr) == 0)
-  {
-    (*top)++;
-    stack[*top] = variables[2];
-  }
-  else if (strcmp("GET:3", instr) == 0)
-  {
-    (*top)++;
-    stack[*top] = variables[3];
-  }
-  else if (strcmp("GET:4", instr) == 0)
-  {
-    (*top)++;
-    stack[*top] = variables[4];
-  }
-  else if (strcmp("SET:0", instr) == 0)
-  {
-    variables[0] = stack[*top];
-    (*top)--;
-  }
-  else if (strcmp("SET:1", instr) == 0)
-  {
-    variables[1] = stack[*top];
-    (*top)--;
-  }
-  else if (strcmp("SET:2", instr) == 0)
-  {
-    variables[2] = stack[*top];
-    (*top)--;
-  }
-  else if (strcmp("SET:3", instr) == 0)
-  {
-    variables[3] = stack[*top];
-    (*top)--;
-  }
-  else if (strcmp("SET:4", instr) == 0)
-  {
-    variables[4] = stack[*top];
-    (*top)--;
+    if (isdigit(instr[4]) != 0)
+    {
+      int num = atoi(&(instr[4]));
+      variables[num] = stack[*top];
+      (*top)--;
+    }
   }
 
   //Stack ops
