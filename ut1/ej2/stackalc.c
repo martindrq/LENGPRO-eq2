@@ -130,6 +130,49 @@ void eval(char *code[], int *pos, double stack[], int *top, double variables[])
     (*top)--;
   }
 
+  else if (strncmp("UJP+", instr, 4) == 0)
+  {
+    if (isdigit(instr[4]) != 0)
+    {
+      int num = atoi(&(instr[4]));
+      (*pos) += num - 1;
+    }
+  }
+  else if (strncmp("UJP-", instr, 4) == 0)
+  {
+    if (isdigit(instr[4]) != 0)
+    {
+      int num = atoi(&(instr[4]));
+      (*pos) -= num;
+    }
+  }
+
+  else if (strncmp("CJP+", instr, 4) == 0)
+  {
+    if (isdigit(instr[4]) != 0 && stack[*top])
+    {
+      int num = atoi(&(instr[4]));
+      (*pos) += num - 1;
+      (*top)--;
+    }
+    else {   
+      (*top)--;
+    }
+  }
+  else if (strncmp("CJP-", instr, 4) == 0)
+  {
+    if (isdigit(instr[4]) != 0 && stack[*top])
+    {
+      int num = atoi(&(instr[4]));
+      (*pos) -= num;
+      (*top)--;
+    }
+    else {
+      
+      (*top)--;
+    }
+  }
+
   else
   {
     char numeral[strlen(instr)];
@@ -154,7 +197,7 @@ void printStack(double stack[], int top, double variables[])
 void evalCode(char *code[], int codeLength, double stack[], int *top, double variables[])
 {
   int pos = 0;
-  for (int pos = 0; pos < codeLength; pos++)
+  for (int pos = 0; pos < codeLength && pos >= 0; pos++)
   {
     eval(code, &pos, stack, top, variables);
   }
