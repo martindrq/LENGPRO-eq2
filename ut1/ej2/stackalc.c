@@ -96,6 +96,7 @@ void eval(char *code[], int *pos, double stack[], int *top, double variables[])
   else if (strcmp("LTE", instr) == 0)
   {
     stack[(*top) - 1] = stack[(*top) - 1] <= stack[*top];
+    (*top)--;
   }
 
   //Variables
@@ -143,7 +144,9 @@ void eval(char *code[], int *pos, double stack[], int *top, double variables[])
     if (isdigit(instr[4]) != 0)
     {
       int num = atoi(&(instr[4]));
-      (*pos) -= num;
+      float new_num = stack[(*top) - num + 1];
+      (*top)++;
+      stack[*top] = new_num;
     }
   }
 
@@ -164,8 +167,8 @@ void eval(char *code[], int *pos, double stack[], int *top, double variables[])
     if (isdigit(instr[4]) != 0 && stack[*top])
     {
       int num = atoi(&(instr[4]));
-      (*pos) -= num;
-      (*top)--;
+      float new_num = stack[(*top) - num + 1];
+      stack[*top] = new_num;
     }
     else {
       
